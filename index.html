@@ -15,7 +15,7 @@
 
     <title>Hello, world!</title>
   </head>
-  <body>
+  <body onload="onLoad()">
     <div class="container">
       <div
         class="
@@ -159,53 +159,20 @@
         </div>
       </form>
     </div>
-    <div id="output">
-      <!-- <div class="row">
-        <div class="col-1 offset-1">ชื่อ</div>
-        <div class="col">สมชาย</div>
-      </div>
-      <div class="row">
-        <div class="col-1 offset-1">รหัส</div>
-        <div class="col">a@b.com</div>
-      </div>
-      <div class="row">
-        <div class="col-1 offset-1">เพศ</div>
-        <div class="col">หญิง</div>
-      </div> -->
-    </div>
-    <div class="d-flex flex-row justify-content-center mx-5">
-      <table class="table table-striped">
+    <div id="output" class="px-5">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">ชื่อ</th>
+            <th scope="col">รหัส</th>
+            <th scope="col">เพศ</th>
           </tr>
         </thead>
-        <tbody id="outputTableBody">
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
+        <tbody id="tableBody"></tbody>
+        <tbody id="outputTableBody"></tbody>
       </table>
     </div>
-
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
