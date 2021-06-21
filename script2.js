@@ -1,4 +1,3 @@
-
 var searchButton = document.getElementById('searchButton')
 var inputText = document.getElementById('inputText')
 var output = document.getElementById('output')
@@ -22,11 +21,10 @@ function addDataToTable(index){
     cell.innerHTML = inputName.value
     row.appendChild(cell)
     cell = document.createElement('td')
-    //cell.innerHTML = inputNamePrefix.options[inputNamePrefix.selectedIndex].text
     row.appendChild(cell)
     outputTableBody.appendChild(row)
 }
-
+var ip = 0
 var index = 1
 submitData.addEventListener('click',(event)=>{
    addDataToTable(index++)
@@ -48,9 +46,6 @@ function addStudentTotable(index,student){
     img.height = 200
     img.classList.add('img-thumbnail')
     cell.appendChild(img)
-    row.appendChild(cell)
-    cell = document.createElement('td')
-    cell.innerHTML = student.gender
     row.appendChild(cell)
     cell = document.createElement('td')
     let button = document.createElement('button')
@@ -78,7 +73,8 @@ function addStudentTotable(index,student){
         singleStudentResult.style.display='none'
         listStudentResult.style.display='none'
         addUserDetail.style.display='block'
-        upStudent(student.id)
+        console.log(student.id)
+        ip = student.id
         }
     })
     cell.appendChild(button2)
@@ -86,25 +82,17 @@ function addStudentTotable(index,student){
     row.appendChild(cell)
     tableBody.appendChild(row)
 }  
+
 function addStudentList(studentList){
     let counter = 1
     const tableBody = document.getElementById('tableBody')
-    // tableBody.innerHTML=''
     for(student of studentList){
         addStudentTotable(counter++,student)
     }
 } 
-function onLoad(){
-    // fetch('https://dv-student-backend-2019.appspot.com/students')
-    // .then((response) => {
-    //     return response.json()
-    // }).then(data => {
-    //     addStudentList(data)
-    // })
-    
-    hideAll()
 
-    // showAllStudents()
+function onLoad(){
+    hideAll()
 }
 
 function addStudent(){ 
@@ -126,8 +114,8 @@ function addStudentData(student){
     listStudentResult.style.display='none'
     let idElem = document.getElementById('id') 
     idElem.innerHTML = student.id 
-    let studentIdElem = document.getElementById ('studentID') 
-    studentIdElem.innerHTML = student.studentIdElem
+    let studentIdElem = document.getElementById ('studentId') 
+    studentIdElem.innerHTML = student.studentId
     let nameElem = document.getElementById('name') 
     nameElem.innerHTML = `${student.name} ${student.surname}`
     let gpaElem = document.getElementById ('gpa') 
@@ -152,6 +140,9 @@ function addStudentToDB(student){
         }
     }).then(data =>{
         console.log('success',data)
+        singleStudentResult.style.display='none'
+        listStudentResult.style.display='block'
+        addUserDetail.style.display='none'
         showAllStudents()
     })
 }
@@ -173,24 +164,41 @@ function deleteStudent (id) {
     })
 }
 
-function upStudent(id){
-    fetch(`https://dv-student-backend-2019.appspot.com/student/${id}`,{
-        method: 'POST',
+function editStudentDB(){
+    console.log(ip)
+    fetch(`https://dv-student-backend-2019.appspot.com/students`,{
+        method: 'PUT',
         headers:{
             'Content-Type': 'application/json'
         },
-        body:JSON.stringify(id)
-    }).then(response =>{
-        if(response.status === 200){
-            return response.json()
-        }else{
-            throw Error(response.statusText)
-        }
-    }).then(data =>{
-        console.log('success',data)
-        showAllStudents()
+        body:JSON.stringify({
+        "id":ip,
+        "name" : document.getElementById('nameInput').value ,
+        "surname" : document.getElementById('surnameInput').value ,
+        "studentId" : document.getElementById ('studentIdInput').value ,
+        "gpa" : document.getElementById ('gpaInput').value ,
+        "image" : document.getElementById ('imageLinkInput').value
+        })
     })
+    .then(response =>console.log(response))
+    .catch(err => console.log(err))
+        singleStudentResult.style.display='none'
+        listStudentResult.style.display='block'
+        addUserDetail.style.display='none'
 }
+
+function editStudent(){ 
+    editStudentDB() 
+}
+
+document.getElementById('updateButton').addEventListener('click',(event)=>{
+    console.log('click')
+    editStudent(student.id)
+})
+
+
+
+
 
 document.getElementById('searchButton').addEventListener('click', (event) =>{
     let id = document.getElementById('inputText').value
@@ -200,6 +208,7 @@ document.getElementById('searchButton').addEventListener('click', (event) =>{
     .then(response => {
         return response.json()
     }).then(student => {
+        hideAll()
         addStudentData(student)
     })
     }
